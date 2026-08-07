@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manhattan Neighborhoods — A Field Guide</title>
+<meta name="description" content="An illustrated field guide to the neighborhoods of Manhattan, from the Financial District to Harlem." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #14110f;
+    --paper: #f6f1e7;
+    --paper-2: #efe7d8;
+    --line: #d8ccb4;
+    --accent: #b8442a;      /* brick red */
+    --accent-2: #1c3f5e;    /* hudson blue */
+    --gold: #c39a3e;
+    --muted: #6f6656;
+    --card: #fffdf8;
+    --shadow: 0 1px 2px rgba(20,17,15,.04), 0 12px 32px -12px rgba(20,17,15,.25);
+    --radius: 16px;
+    --maxw: 1180px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, .display { font-family: 'Fraunces', Georgia, serif; }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  /* subtle paper texture */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(20,17,15,.025) 1px, transparent 1px);
+    background-size: 4px 4px;
+    pointer-events: none; z-index: 0;
+  }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgba(246,241,231,.82);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.01em; }
+  .brand .mark {
+    width: 30px; height: 30px; border-radius: 8px; flex: none;
+    background: linear-gradient(135deg, var(--accent), #d76a4a);
+    display: grid; place-items: center; color: #fff; font-family: 'Fraunces'; font-weight: 900;
+    box-shadow: var(--shadow);
+  }
+  .brand small { display:block; font-weight:500; font-size:11px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+  .nav-links { display: flex; gap: 6px; align-items: center; }
+  .nav-links a {
+    text-decoration: none; font-size: 14px; font-weight: 500; color: var(--muted);
+    padding: 8px 14px; border-radius: 999px; transition: .2s;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--paper-2); }
+  .nav-toggle { display:none; background:none; border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:18px; cursor:pointer; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 84px 0 56px; position: relative; }
+  .eyebrow {
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:22px;
+  }
+  .eyebrow::before { content:""; width:26px; height:2px; background:var(--accent); display:inline-block; }
+  .hero h1 { font-size: clamp(2.6rem, 7vw, 5.4rem); line-height: .98; font-weight: 900; letter-spacing:-.02em; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero p.lede { max-width: 560px; margin-top: 24px; font-size: 1.18rem; color: #423c33; }
+  .hero-stats { display:flex; gap:40px; margin-top:40px; flex-wrap:wrap; }
+  .stat .n { font-family:'Fraunces'; font-weight:900; font-size:2.1rem; line-height:1; }
+  .stat .l { font-size:13px; color:var(--muted); margin-top:4px; }
+  .hero-cta { margin-top: 36px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn {
+    display:inline-flex; align-items:center; gap:9px; text-decoration:none;
+    padding: 13px 24px; border-radius: 999px; font-weight:600; font-size:15px; cursor:pointer;
+    border:1px solid transparent; transition:.2s; background:none;
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .btn.ghost { border-color: var(--ink); color: var(--ink); }
+  .btn.ghost:hover { background: var(--ink); color: var(--paper); }
+
+  .hero-art {
+    position:absolute; right:-40px; top:40px; width:min(46%,540px); aspect-ratio: 3/4;
+    border-radius: 22px; overflow:hidden; box-shadow: var(--shadow);
+    border: 6px solid var(--card); rotate: 2.5deg;
+  }
+  .hero-art img { width:100%; height:100%; object-fit:cover; }
+  .hero-art .cap {
+    position:absolute; left:0; right:0; bottom:0; padding:14px 16px;
+    background: linear-gradient(transparent, rgba(20,17,15,.75));
+    color:#fff; font-size:12px; letter-spacing:.04em;
+  }
+
+  /* ---------- Section shells ---------- */
+  section { padding: 68px 0; position: relative; }
+  .sec-head { max-width: 640px; margin-bottom: 40px; }
+  .sec-head .eyebrow { margin-bottom:14px; }
+  .sec-head h2 { font-size: clamp(2rem, 4.2vw, 3rem); line-height:1.02; font-weight:900; letter-spacing:-.02em; }
+  .sec-head p { margin-top:14px; color:var(--muted); font-size:1.05rem; }
+
+  /* ---------- Filter chips ---------- */
+  .filters { display:flex; gap:9px; flex-wrap:wrap; margin-bottom:32px; }
+  .chip {
+    font: inherit; font-size:13.5px; font-weight:600; cursor:pointer;
+    padding:8px 16px; border-radius:999px; border:1px solid var(--line);
+    background:var(--card); color:var(--muted); transition:.18s;
+  }
+  .chip:hover { border-color:var(--ink); color:var(--ink); }
+  .chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+  /* ---------- Neighborhood grid ---------- */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:24px; }
+  .card {
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; box-shadow: var(--shadow); transition: .28s cubic-bezier(.2,.7,.2,1);
+    display:flex; flex-direction:column; opacity:0; transform: translateY(14px);
+  }
+  .card.in { opacity:1; transform:none; }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 20px 44px -16px rgba(20,17,15,.4); }
+  .card .thumb { position:relative; aspect-ratio: 16/11; overflow:hidden; }
+  .card .thumb img { width:100%; height:100%; object-fit:cover; transition:.5s; }
+  .card:hover .thumb img { transform: scale(1.06); }
+  .card .region-tag {
+    position:absolute; top:12px; left:12px; font-size:11px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; padding:5px 11px; border-radius:999px;
+    background: rgba(255,253,248,.92); color:var(--accent-2); backdrop-filter: blur(4px);
+  }
+  .card .body { padding:20px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .card .body h3 { font-size:1.4rem; font-weight:900; letter-spacing:-.01em; }
+  .card .nick { font-size:12.5px; color:var(--accent); font-weight:600; letter-spacing:.02em; margin-top:-6px; }
+  .card .desc { font-size:14.5px; color:#4a4339; }
+  .card .tags { display:flex; gap:7px; flex-wrap:wrap; margin-top:auto; padding-top:6px; }
+  .card .tags span { font-size:11.5px; color:var(--muted); background:var(--paper-2); padding:4px 10px; border-radius:8px; }
+  .card .more {
+    margin-top:8px; align-self:flex-start; background:none; border:none; cursor:pointer;
+    font:inherit; font-weight:600; font-size:14px; color:var(--accent-2); padding:0;
+    display:inline-flex; align-items:center; gap:6px; transition:.2s;
+  }
+  .card .more:hover { gap:10px; }
+
+  .empty { text-align:center; color:var(--muted); padding:60px 0; grid-column:1/-1; }
+
+  /* ---------- Feature strip ---------- */
+  .feature { background: var(--accent-2); color:#f3ede1; border-radius:28px; overflow:hidden; margin: 20px 0; }
+  .feature-inner { display:grid; grid-template-columns: 1.1fr 1fr; }
+  .feature .txt { padding: 54px 48px; }
+  .feature .txt .eyebrow { color: var(--gold); }
+  .feature .txt .eyebrow::before { background: var(--gold); }
+  .feature h2 { font-size: clamp(1.9rem,3.5vw,2.7rem); font-weight:900; line-height:1.04; }
+  .feature p { margin-top:16px; color:#cdd7e0; }
+  .feature .flist { margin-top:26px; display:grid; gap:14px; }
+  .feature .flist li { list-style:none; display:flex; gap:13px; align-items:flex-start; font-size:15px; }
+  .feature .flist .d { flex:none; width:26px; height:26px; border-radius:8px; background: rgba(195,154,62,.2); color:var(--gold); display:grid; place-items:center; font-weight:700; font-family:'Fraunces'; }
+  .feature .pic img { width:100%; height:100%; object-fit:cover; min-height:340px; }
+
+  /* ---------- Timeline ---------- */
+  .timeline { position:relative; margin-top:20px; padding-left:8px; }
+  .timeline::before { content:""; position:absolute; left:15px; top:6px; bottom:6px; width:2px; background:var(--line); }
+  .tl-item { position:relative; padding:0 0 30px 52px; }
+  .tl-item .dot { position:absolute; left:6px; top:3px; width:20px; height:20px; border-radius:50%; background:var(--paper); border:3px solid var(--accent); }
+  .tl-item .yr { font-family:'Fraunces'; font-weight:900; font-size:1.3rem; color:var(--accent); }
+  .tl-item h4 { font-size:1.05rem; margin:2px 0 4px; }
+  .tl-item p { font-size:14.5px; color:var(--muted); max-width:620px; }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:100; background:rgba(20,17,15,.55); backdrop-filter:blur(4px);
+    display:none; align-items:center; justify-content:center; padding:22px; opacity:0; transition:opacity .25s;
+  }
+  .modal-overlay.open { display:flex; opacity:1; }
+  .modal {
+    background:var(--card); border-radius:22px; max-width:660px; width:100%; max-height:90vh; overflow:auto;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); transform:translateY(16px) scale(.98); transition:.28s cubic-bezier(.2,.7,.2,1);
+  }
+  .modal-overlay.open .modal { transform:none; }
+  .modal .mhero { position:relative; aspect-ratio:16/9; overflow:hidden; }
+  .modal .mhero img { width:100%; height:100%; object-fit:cover; }
+  .modal .mhero .close {
+    position:absolute; top:14px; right:14px; width:38px; height:38px; border-radius:50%; border:none; cursor:pointer;
+    background:rgba(255,253,248,.92); font-size:20px; line-height:1; display:grid; place-items:center; box-shadow:var(--shadow);
+  }
+  .modal .mhero .mtitle { position:absolute; left:0; right:0; bottom:0; padding:26px 28px 20px; background:linear-gradient(transparent,rgba(20,17,15,.85)); color:#fff; }
+  .modal .mhero .mtitle h3 { font-size:2rem; font-weight:900; }
+  .modal .mhero .mtitle .nick { color:#ffd8a8; font-weight:600; font-size:14px; }
+  .modal .mbody { padding:26px 28px 30px; }
+  .modal .mbody p { color:#4a4339; }
+  .modal .factgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:14px; margin:22px 0; }
+  .modal .fact { background:var(--paper-2); border-radius:12px; padding:14px; }
+  .modal .fact .k { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+  .modal .fact .v { font-weight:700; font-family:'Fraunces'; font-size:1.05rem; margin-top:3px; }
+  .modal .mbody h4 { font-family:'Inter'; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:20px 0 10px; }
+  .modal .hlist { display:flex; flex-wrap:wrap; gap:8px; }
+  .modal .hlist span { background:var(--card); border:1px solid var(--line); padding:6px 13px; border-radius:999px; font-size:13.5px; font-weight:500; }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--ink); color:#c9c0b2; padding:56px 0 34px; margin-top:40px; }
+  footer .fgrid { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; }
+  footer h4 { color:#fff; font-family:'Inter'; font-size:13px; text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px; }
+  footer a { color:#c9c0b2; text-decoration:none; display:block; padding:5px 0; font-size:14px; transition:.2s; }
+  footer a:hover { color:#fff; }
+  footer .fbrand .brand { color:#fff; margin-bottom:14px; }
+  footer .fbrand p { font-size:14px; max-width:320px; }
+  footer .copy { margin-top:40px; padding-top:22px; border-top:1px solid rgba(255,255,255,.12); font-size:13px; color:#8a8172; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+
+  .reveal { opacity:0; transform:translateY(20px); transition:.7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity:1; transform:none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .hero-art { display:none; }
+    .feature-inner { grid-template-columns:1fr; }
+    .feature .pic { order:-1; }
+    footer .fgrid { grid-template-columns:1fr 1fr; }
+    footer .fbrand { grid-column:1/-1; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display:none; }
+    .nav-toggle { display:block; }
+    .nav-links.open {
+      display:flex; position:absolute; top:66px; left:0; right:0; flex-direction:column;
+      background:var(--paper); border-bottom:1px solid var(--line); padding:12px 24px; gap:2px;
+    }
+    .hero { padding:56px 0 36px; }
+    .feature .txt { padding:38px 26px; }
+    footer .fgrid { grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition:none !important; animation:none !important; scroll-behavior:auto; }
+    .reveal, .card { opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" style="text-decoration:none">
+      <span class="mark">M</span>
+      <span>Manhattan<small>Neighborhood Field Guide</small></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#explore">Explore</a>
+      <a href="#map">By Region</a>
+      <a href="#history">History</a>
+      <a href="#about">About</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<a id="top"></a>
+<div class="hero-wrap wrap">
+  <section class="hero">
+    <span class="eyebrow">An illustrated field guide</span>
+    <h1>The many <em>villages</em> that make one island.</h1>
+    <p class="lede">Manhattan is thirteen miles of stitched-together worlds — each with its own accent, architecture, and rhythm. Wander through the ones that shaped the modern city.</p>
+    <div class="hero-cta">
+      <a href="#explore" class="btn primary">Explore neighborhoods →</a>
+      <a href="#history" class="btn ghost">A brief history</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="n">12+</div><div class="l">Neighborhoods profiled</div></div>
+      <div class="stat"><div class="n">1.6M</div><div class="l">Residents on the island</div></div>
+      <div class="stat"><div class="n">1624</div><div class="l">Year of first settlement</div></div>
+    </div>
+    <div class="hero-art">
+      <img src="https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=80" alt="Brownstone rowhouses on a tree-lined Manhattan street" />
+      <div class="cap">West Village brownstones at golden hour</div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= EXPLORE ================= -->
+<section id="explore">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Explore</span>
+      <h2>Pick a neighborhood, meet its character.</h2>
+      <p>Filter by part of the island, then tap any card for a fuller portrait — the vibe, the landmarks, and why it feels the way it does.</p>
+    </div>
+
+    <div class="filters" id="filters" role="tablist" aria-label="Filter neighborhoods by region"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ================= FEATURE ================= -->
+<section id="map">
+  <div class="wrap">
+    <div class="feature reveal">
+      <div class="feature-inner">
+        <div class="txt">
+          <span class="eyebrow">Reading the island</span>
+          <h2>Downtown, Midtown, Uptown — and everything folded between.</h2>
+          <p>Manhattanites rarely say "north" or "south." They say uptown and downtown, and the whole island bends to that logic. Here's the quick mental map.</p>
+          <ul class="flist">
+            <li><span class="d">↓</span><div><strong>Downtown</strong> — below 14th St. The old city: winding colonial streets, finance, and the artist enclaves that gentrified around them.</div></li>
+            <li><span class="d">▦</span><div><strong>Midtown</strong> — roughly 14th to 59th. The grid at full throttle: skyscrapers, theaters, transit hubs, and offices.</div></li>
+            <li><span class="d">↑</span><div><strong>Uptown</strong> — above 59th, split by Central Park into the East and West Sides, rising into Harlem and beyond.</div></li>
+          </ul>
+        </div>
+        <div class="pic">
+          <img src="https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?auto=format&fit=crop&w=800&q=80" alt="Aerial view of the Manhattan grid and Central Park" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HISTORY ================= -->
+<section id="history">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">History</span>
+      <h2>Four centuries on a narrow island.</h2>
+      <p>How a Lenape trading ground became the densest, most storied stretch of city in the country.</p>
+    </div>
+    <div class="timeline reveal" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal" style="max-width:720px">
+      <span class="eyebrow">About this guide</span>
+      <h2>Made for wanderers, not tourists.</h2>
+      <p>This is a small, opinionated field guide — a starting point for getting lost on purpose. Descriptions lean on the enduring character of each neighborhood rather than the shop that opened last week. Imagery is illustrative. Go see for yourself; the island rewards it.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fbrand">
+        <div class="brand"><span class="mark">M</span><span>Manhattan Field Guide</span></div>
+        <p>An illustrated walk through the neighborhoods that make one island feel like a dozen cities.</p>
+      </div>
+      <div>
+        <h4>Sections</h4>
+        <a href="#explore">Explore neighborhoods</a>
+        <a href="#map">By region</a>
+        <a href="#history">History</a>
+        <a href="#about">About</a>
+      </div>
+      <div>
+        <h4>The island</h4>
+        <a href="#explore">Downtown</a>
+        <a href="#explore">Midtown</a>
+        <a href="#explore">Uptown</a>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© 2026 Manhattan Field Guide · A demo project.</span>
+      <span>Photography via Unsplash · Built with care.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MODAL ================= -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modalCard"></div>
+</div>
+
+<script>
+/* ---------------- Data ---------------- */
+const NEIGHBORHOODS = [
+  {
+    name: "Financial District", nick: "The birthplace of the city", region: "Downtown",
+    img: "https://images.unsplash.com/photo-1534430480872-3498386e7856?auto=format&fit=crop&w=800&q=80",
+    desc: "Colonial-era streets tangle beneath glass towers where Wall Street still sets the world's clock.",
+    long: "The oldest corner of Manhattan, where the original Dutch settlement of New Amsterdam took root. Narrow, curving lanes — a rarity on the grid — meet the sheer verticality of the financial world. Once a 9-to-5 canyon that emptied at night, FiDi has become a genuine residential neighborhood, with the 9/11 Memorial and Stone Street's cobblestone taverns anchoring its two moods.",
+    tags: ["Historic", "Skyscrapers", "Waterfront"],
+    facts: { Established: "1624", Vibe: "Powerful", "Best for": "History + views" },
+    landmarks: ["Wall Street", "9/11 Memorial", "Stone Street", "Battery Park", "Charging Bull"]
+  },
+  {
+    name: "Tribeca", nick: "Triangle Below Canal", region: "Downtown",
+    img: "https://images.unsplash.com/photo-1555109307-f7d9da25c244?auto=format&fit=crop&w=800&q=80",
+    desc: "Cast-iron warehouses turned loft palaces — quietly the most expensive zip code in the city.",
+    long: "Once a gritty district of textile warehouses, Tribeca's soaring cast-iron buildings were reborn as sprawling artist lofts, then as some of the priciest real estate in America. Cobblestone streets, a film festival founded by Robert De Niro, and a hush unusual for downtown give it an understated, moneyed calm.",
+    tags: ["Lofts", "Upscale", "Film"],
+    facts: { Established: "1800s", Vibe: "Understated luxe", "Best for": "Architecture strolls" },
+    landmarks: ["Tribeca Film Festival", "Cast-iron lofts", "Hudson River Greenway", "Franklin Street"]
+  },
+  {
+    name: "SoHo", nick: "South of Houston", region: "Downtown",
+    img: "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=800&q=80",
+    desc: "The world's largest collection of cast-iron architecture, now a cobblestoned open-air mall.",
+    long: "In the 1970s, artists colonized SoHo's abandoned industrial lofts, birthing New York's contemporary gallery scene. The galleries have largely moved on and flagship boutiques moved in, but the cast-iron facades and Belgian-block streets remain some of the most photographed in the city.",
+    tags: ["Shopping", "Cast-iron", "Galleries"],
+    facts: { Established: "1800s", Vibe: "Fashionable", "Best for": "Shopping + people-watching" },
+    landmarks: ["Cast-iron Historic District", "Greene Street", "Boutiques", "Art galleries"]
+  },
+  {
+    name: "Greenwich Village", nick: "The Village", region: "Downtown",
+    img: "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=80",
+    desc: "Crooked leafy streets that broke the grid — a century of bohemians, folk singers, and radicals.",
+    long: "The Village famously ignores Manhattan's grid, its streets bending along old cow paths and property lines. It was the beating heart of American bohemia: home to the Beat poets, the folk revival that launched Bob Dylan, and the Stonewall uprising that ignited the modern LGBTQ+ rights movement. Washington Square Park is still its living room.",
+    tags: ["Bohemian", "Historic", "Nightlife"],
+    facts: { Established: "1700s", Vibe: "Romantic", "Best for": "Aimless wandering" },
+    landmarks: ["Washington Square Park", "Stonewall Inn", "NYU", "Bleecker Street", "Comedy clubs"]
+  },
+  {
+    name: "East Village", nick: "Loisaida's northern edge", region: "Downtown",
+    img: "https://images.unsplash.com/photo-1571043733612-d5444ff7e59f?auto=format&fit=crop&w=800&q=80",
+    desc: "Punk's old capital — dive bars, community gardens, and cheap eats that refuse to fully gentrify.",
+    long: "Grittier and younger than its western twin, the East Village was the crucible of NYC punk, home to CBGB and generations of squatters, poets, and immigrants. Ukrainian diners sit beside ramen counters and secret community gardens bloom in the gaps between tenements. It's loud, cheap-ish, and stubbornly alive.",
+    tags: ["Nightlife", "Punk", "Eclectic"],
+    facts: { Established: "1800s", Vibe: "Rebellious", "Best for": "Late nights + cheap eats" },
+    landmarks: ["Tompkins Square Park", "St. Marks Place", "Community gardens", "Dive bars"]
+  },
+  {
+    name: "Lower East Side", nick: "The LES", region: "Downtown",
+    img: "https://images.unsplash.com/photo-1602940659805-770d1b3b9911?auto=format&fit=crop&w=800&q=80",
+    desc: "America's immigrant gateway, layered tenement by tenement into a buzzing nightlife hub.",
+    long: "For over a century the Lower East Side was where new arrivals — Jewish, Italian, Chinese, Puerto Rican — first landed and hustled. Its tenements now house the Tenement Museum alongside galleries, music venues, and some of the busiest bar-hopping in Manhattan. Katz's Delicatessen has been slicing pastrami here since 1888.",
+    tags: ["Immigrant history", "Nightlife", "Food"],
+    facts: { Established: "1800s", Vibe: "Layered", "Best for": "Food + history" },
+    landmarks: ["Tenement Museum", "Katz's Delicatessen", "Essex Market", "Music venues"]
+  },
+  {
+    name: "Chelsea", nick: "The gallery district", region: "Midtown",
+    img: "https://images.unsplash.com/photo-1583842761802-9ad967f7e39a?auto=format&fit=crop&w=800&q=80",
+    desc: "Contemporary art's HQ, an elevated park on old rail tracks, and a lively cultural core.",
+    long: "Chelsea reinvented the derelict for a living: the High Line turned an abandoned freight viaduct into the city's most beloved elevated park, and hundreds of blue-chip galleries filled its former warehouses. Chelsea Market feeds the crowds and the neighborhood has long been a center of LGBTQ+ life.",
+    tags: ["Art", "The High Line", "Culture"],
+    facts: { Established: "1800s", Vibe: "Creative", "Best for": "Galleries + the High Line" },
+    landmarks: ["The High Line", "Chelsea Market", "Gallery district", "Hudson Yards edge"]
+  },
+  {
+    name: "Times Square & Theater District", nick: "The Crossroads of the World", region: "Midtown",
+    img: "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=800&q=80",
+    desc: "Blinding lights, Broadway marquees, and the beating tourist heart of the city.",
+    long: "Love it or flee it, Times Square is the electric center of the Broadway theater district — dozens of stages within a few blocks staging the best live theater in the country. The billboards never sleep and roughly 50 million visitors pass through each year, making it one of the most visited places on earth.",
+    tags: ["Broadway", "Bright lights", "Tourist"],
+    facts: { Established: "1900s", Vibe: "Electric", "Best for": "Broadway shows" },
+    landmarks: ["Broadway theaters", "TKTS steps", "Bright billboards", "Bryant Park nearby"]
+  },
+  {
+    name: "Midtown East", nick: "The corporate spine", region: "Midtown",
+    img: "https://images.unsplash.com/photo-1546436836-07a91091f160?auto=format&fit=crop&w=800&q=80",
+    desc: "Grand Central, the Chrysler Building, and Art Deco skyscrapers by the block.",
+    long: "The business engine of Manhattan, Midtown East stacks landmark towers shoulder to shoulder: the Chrysler Building's steel crown, the Empire State a few blocks south, and Grand Central Terminal's celestial ceiling. The United Nations sits on its eastern riverfront edge.",
+    tags: ["Art Deco", "Business", "Landmarks"],
+    facts: { Established: "1900s", Vibe: "Grand", "Best for": "Architecture + landmarks" },
+    landmarks: ["Grand Central", "Chrysler Building", "Empire State Building", "United Nations"]
+  },
+  {
+    name: "Upper West Side", nick: "The UWS", region: "Uptown",
+    img: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=800&q=80",
+    desc: "Cultured and residential — pre-war apartments, Lincoln Center, and two great parks as bookends.",
+    long: "Framed by Central Park and Riverside Park, the Upper West Side is Manhattan's intellectual, family-friendly quarter. Stately pre-war buildings line the avenues, Lincoln Center anchors the performing arts, and the American Museum of Natural History has drawn wide-eyed kids for generations.",
+    tags: ["Residential", "Culture", "Parks"],
+    facts: { Established: "1800s", Vibe: "Refined + cozy", "Best for": "Museums + park walks" },
+    landmarks: ["Lincoln Center", "Natural History Museum", "Central Park", "Riverside Park"]
+  },
+  {
+    name: "Upper East Side", nick: "Museum Mile", region: "Uptown",
+    img: "https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=800&q=80",
+    desc: "Old-money elegance, world-class museums, and the most rarefied stretch of Fifth Avenue.",
+    long: "Manhattan at its most polished. Fifth and Park Avenues carry limestone mansions and doorman co-ops, while Museum Mile lines Central Park with the Met, the Guggenheim, and more. It's quieter and more buttoned-up than downtown — genteel by design.",
+    tags: ["Museums", "Upscale", "Classic"],
+    facts: { Established: "1800s", Vibe: "Elegant", "Best for": "Museums + Fifth Ave" },
+    landmarks: ["The Met", "Guggenheim", "Museum Mile", "Fifth Avenue mansions"]
+  },
+  {
+    name: "Harlem", nick: "The capital of Black America", region: "Uptown",
+    img: "https://images.unsplash.com/photo-1602940659805-770d1b3b9911?auto=format&fit=crop&w=800&q=80",
+    desc: "The birthplace of a cultural renaissance — jazz, brownstones, and a proud living heritage.",
+    long: "In the 1920s the Harlem Renaissance made these blocks the epicenter of Black art, literature, and music, echoing from the Apollo Theater's stage. Today Harlem balances its historic brownstone beauty and soul-food institutions with a wave of renewal, its cultural pride undimmed.",
+    tags: ["Culture", "Jazz", "Historic"],
+    facts: { Established: "1600s", Vibe: "Soulful", "Best for": "Music + culture" },
+    landmarks: ["Apollo Theater", "Sylvia's", "Marcus Garvey Park", "Striver's Row"]
+  }
+];
+
+const TIMELINE = [
+  { yr: "1624", title: "New Amsterdam founded", text: "Dutch colonists establish a trading post at the island's southern tip — the seed of the Financial District's tangled streets." },
+  { yr: "1811", title: "The Commissioners' Plan", text: "A relentless rectangular grid is imposed above Houston Street, defining nearly every neighborhood that followed." },
+  { yr: "1870s–1900s", title: "The tenement era", text: "Waves of immigrants pack the Lower East Side and beyond, layering the accents and foods that still define downtown." },
+  { yr: "1920s", title: "The Harlem Renaissance", text: "Uptown becomes the world capital of Black art, jazz, and literature — a cultural explosion heard everywhere." },
+  { yr: "1960s–70s", title: "Artists take downtown", text: "Cheap loft space draws artists to SoHo and the Village, and bohemian counterculture reshapes the island's south." },
+  { yr: "2009", title: "The High Line opens", text: "A derelict rail viaduct becomes an elevated park, sparking a wave of adaptive reuse and remaking Chelsea's west side." }
+];
+
+/* ---------------- Render ---------------- */
+const REGIONS = ["All", "Downtown", "Midtown", "Uptown"];
+const grid = document.getElementById('grid');
+const filtersEl = document.getElementById('filters');
+let activeRegion = "All";
+
+function renderFilters() {
+  filtersEl.innerHTML = REGIONS.map(r =>
+    `<button class="chip ${r===activeRegion?'active':''}" data-region="${r}" role="tab" aria-selected="${r===activeRegion}">${r}</button>`
+  ).join('');
+}
+
+function renderGrid() {
+  const list = NEIGHBORHOODS.filter(n => activeRegion === "All" || n.region === activeRegion);
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty">No neighborhoods here yet.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map((n, i) => `
+    <article class="card" data-name="${n.name}" style="transition-delay:${Math.min(i*45,300)}ms">
+      <div class="thumb">
+        <span class="region-tag">${n.region}</span>
+        <img src="${n.img}" alt="A street scene in ${n.name}, Manhattan" loading="lazy" />
+      </div>
+      <div class="body">
+        <h3>${n.name}</h3>
+        <div class="nick">${n.nick}</div>
+        <p class="desc">${n.desc}</p>
+        <div class="tags">${n.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+        <button class="more" data-name="${n.name}">Read more →</button>
+      </div>
+    </article>
+  `).join('');
+  observeCards();
+}
+
+function observeCards() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.card').forEach(c => io.observe(c));
+}
+
+function renderTimeline() {
+  document.getElementById('timeline').innerHTML = TIMELINE.map(t => `
+    <div class="tl-item">
+      <div class="dot"></div>
+      <div class="yr">${t.yr}</div>
+      <h4>${t.title}</h4>
+      <p>${t.text}</p>
+    </div>
+  `).join('');
+}
+
+/* ---------------- Modal ---------------- */
+const modal = document.getElementById('modal');
+const modalCard = document.getElementById('modalCard');
+let lastFocused = null;
+
+function openModal(name) {
+  const n = NEIGHBORHOODS.find(x => x.name === name);
+  if (!n) return;
+  lastFocused = document.activeElement;
+  modalCard.innerHTML = `
+    <div class="mhero">
+      <img src="${n.img}" alt="${n.name}, Manhattan" />
+      <button class="close" id="modalClose" aria-label="Close">×</button>
+      <div class="mtitle">
+        <div class="nick">${n.region} · ${n.nick}</div>
+        <h3 id="modalTitle">${n.name}</h3>
+      </div>
+    </div>
+    <div class="mbody">
+      <p>${n.long}</p>
+      <div class="factgrid">
+        ${Object.entries(n.facts).map(([k,v])=>`<div class="fact"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('')}
+      </div>
+      <h4>Signature landmarks</h4>
+      <div class="hlist">${n.landmarks.map(l=>`<span>${l}</span>`).join('')}</div>
+    </div>
+  `;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modalClose').focus();
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  if (lastFocused) lastFocused.focus();
+}
+
+/* ---------------- Events ---------------- */
+filtersEl.addEventListener('click', e => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  activeRegion = btn.dataset.region;
+  renderFilters();
+  renderGrid();
+});
+
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('[data-name]');
+  if (btn) openModal(btn.dataset.name);
+});
+
+modal.addEventListener('click', e => { if (e.target === modal || e.target.id === 'modalClose') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open);
+});
+navLinks.addEventListener('click', e => { if (e.target.tagName === 'A') navLinks.classList.remove('open'); });
+
+/* reveal on scroll */
+const revealIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+/* init */
+renderFilters();
+renderGrid();
+renderTimeline();
+</script>
+</body>
+</html>
