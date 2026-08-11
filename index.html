@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <style>
   :root {
     --ink: #14110f;
@@ -220,6 +221,45 @@
   footer .fbrand p { font-size:14px; max-width:320px; }
   footer .copy { margin-top:40px; padding-top:22px; border-top:1px solid rgba(255,255,255,.12); font-size:13px; color:#8a8172; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
 
+  /* ---------- Map ---------- */
+  .map-layout { display:grid; grid-template-columns: 1fr 300px; gap:20px; }
+  #leafletMap {
+    height:560px; border-radius:var(--radius); overflow:hidden;
+    border:1px solid var(--line); box-shadow:var(--shadow); background:var(--paper-2);
+  }
+  .leaflet-container { font-family:'Inter', sans-serif; background:#e8e0d0; }
+  .map-list {
+    height:560px; overflow-y:auto; padding-right:4px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .map-list::-webkit-scrollbar { width:8px; }
+  .map-list::-webkit-scrollbar-thumb { background:var(--line); border-radius:8px; }
+  .map-list button {
+    font:inherit; text-align:left; cursor:pointer; width:100%;
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:12px 14px; display:flex; align-items:center; gap:12px; transition:.18s;
+  }
+  .map-list button:hover, .map-list button:focus-visible {
+    border-color:var(--ink); transform:translateX(3px); outline:none; box-shadow:var(--shadow);
+  }
+  .map-list button .pin { width:12px; height:12px; border-radius:50%; flex:none; box-shadow:0 0 0 3px rgba(0,0,0,.05); }
+  .map-list button .txt strong { display:block; font-size:14.5px; font-weight:700; letter-spacing:-.01em; }
+  .map-list button .txt small { color:var(--muted); font-size:12px; }
+  .map-legend { display:flex; gap:22px; margin-top:18px; flex-wrap:wrap; font-size:13.5px; color:var(--muted); }
+  .map-legend span { display:inline-flex; align-items:center; gap:8px; font-weight:500; }
+  .map-legend i { width:13px; height:13px; border-radius:50%; display:inline-block; }
+  .map-pin {
+    width:20px; height:20px; border-radius:50% 50% 50% 0; transform:rotate(-45deg);
+    border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,.35); cursor:pointer;
+  }
+  .leaflet-popup-content-wrapper { border-radius:12px; }
+  .leaflet-popup-content { margin:12px 14px; font-family:'Inter', sans-serif; }
+  .leaflet-popup-content b { font-family:'Fraunces'; font-size:15px; }
+  .map-pop-btn {
+    margin-top:8px; background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+    font:inherit; font-weight:600; font-size:12.5px; padding:6px 12px; border-radius:999px;
+  }
+
   .reveal { opacity:0; transform:translateY(20px); transition:.7s cubic-bezier(.2,.7,.2,1); }
   .reveal.in { opacity:1; transform:none; }
 
@@ -228,6 +268,9 @@
     .hero-art { display:none; }
     .feature-inner { grid-template-columns:1fr; }
     .feature .pic { order:-1; }
+    .map-layout { grid-template-columns:1fr; }
+    .map-list { height:auto; max-height:none; }
+    #leafletMap { height:420px; }
     footer .fgrid { grid-template-columns:1fr 1fr; }
     footer .fbrand { grid-column:1/-1; }
   }
@@ -258,7 +301,8 @@
     </a>
     <nav class="nav-links" id="navLinks">
       <a href="#explore">Explore</a>
-      <a href="#map">By Region</a>
+      <a href="#map">Map</a>
+      <a href="#regions">By Region</a>
       <a href="#history">History</a>
       <a href="#about">About</a>
     </nav>
@@ -302,8 +346,28 @@
   </div>
 </section>
 
-<!-- ================= FEATURE ================= -->
+<!-- ================= MAP ================= -->
 <section id="map">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The map</span>
+      <h2>See where they sit on the island.</h2>
+      <p>Every neighborhood, pinned and color-coded by region. Click a pin — or a name in the list — to open its full profile.</p>
+    </div>
+    <div class="map-layout reveal">
+      <div id="leafletMap" role="application" aria-label="Interactive map of Manhattan neighborhoods"></div>
+      <aside class="map-list" id="mapList" aria-label="Neighborhood list"></aside>
+    </div>
+    <div class="map-legend reveal">
+      <span><i style="background:#b8442a"></i>Downtown</span>
+      <span><i style="background:#1c3f5e"></i>Midtown</span>
+      <span><i style="background:#c39a3e"></i>Uptown</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURE ================= -->
+<section id="regions">
   <div class="wrap">
     <div class="feature reveal">
       <div class="feature-inner">
@@ -381,11 +445,13 @@
   <div class="modal" id="modalCard"></div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 /* ---------------- Data ---------------- */
 const NEIGHBORHOODS = [
   {
     name: "Financial District", nick: "The birthplace of the city", region: "Downtown",
+    lat: 40.7075, lng: -74.0113,
     img: "https://images.unsplash.com/photo-1534430480872-3498386e7856?auto=format&fit=crop&w=800&q=80",
     desc: "Colonial-era streets tangle beneath glass towers where Wall Street still sets the world's clock.",
     long: "The oldest corner of Manhattan, where the original Dutch settlement of New Amsterdam took root. Narrow, curving lanes — a rarity on the grid — meet the sheer verticality of the financial world. Once a 9-to-5 canyon that emptied at night, FiDi has become a genuine residential neighborhood, with the 9/11 Memorial and Stone Street's cobblestone taverns anchoring its two moods.",
@@ -395,6 +461,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Tribeca", nick: "Triangle Below Canal", region: "Downtown",
+    lat: 40.7163, lng: -74.0086,
     img: "https://images.unsplash.com/photo-1555109307-f7d9da25c244?auto=format&fit=crop&w=800&q=80",
     desc: "Cast-iron warehouses turned loft palaces — quietly the most expensive zip code in the city.",
     long: "Once a gritty district of textile warehouses, Tribeca's soaring cast-iron buildings were reborn as sprawling artist lofts, then as some of the priciest real estate in America. Cobblestone streets, a film festival founded by Robert De Niro, and a hush unusual for downtown give it an understated, moneyed calm.",
@@ -404,6 +471,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "SoHo", nick: "South of Houston", region: "Downtown",
+    lat: 40.7233, lng: -74.0030,
     img: "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=800&q=80",
     desc: "The world's largest collection of cast-iron architecture, now a cobblestoned open-air mall.",
     long: "In the 1970s, artists colonized SoHo's abandoned industrial lofts, birthing New York's contemporary gallery scene. The galleries have largely moved on and flagship boutiques moved in, but the cast-iron facades and Belgian-block streets remain some of the most photographed in the city.",
@@ -413,6 +481,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Greenwich Village", nick: "The Village", region: "Downtown",
+    lat: 40.7336, lng: -74.0027,
     img: "https://images.unsplash.com/photo-1522083165195-3424ed129620?auto=format&fit=crop&w=800&q=80",
     desc: "Crooked leafy streets that broke the grid — a century of bohemians, folk singers, and radicals.",
     long: "The Village famously ignores Manhattan's grid, its streets bending along old cow paths and property lines. It was the beating heart of American bohemia: home to the Beat poets, the folk revival that launched Bob Dylan, and the Stonewall uprising that ignited the modern LGBTQ+ rights movement. Washington Square Park is still its living room.",
@@ -422,6 +491,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "East Village", nick: "Loisaida's northern edge", region: "Downtown",
+    lat: 40.7265, lng: -73.9815,
     img: "https://images.unsplash.com/photo-1571043733612-d5444ff7e59f?auto=format&fit=crop&w=800&q=80",
     desc: "Punk's old capital — dive bars, community gardens, and cheap eats that refuse to fully gentrify.",
     long: "Grittier and younger than its western twin, the East Village was the crucible of NYC punk, home to CBGB and generations of squatters, poets, and immigrants. Ukrainian diners sit beside ramen counters and secret community gardens bloom in the gaps between tenements. It's loud, cheap-ish, and stubbornly alive.",
@@ -431,6 +501,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Lower East Side", nick: "The LES", region: "Downtown",
+    lat: 40.7150, lng: -73.9843,
     img: "https://images.unsplash.com/photo-1602940659805-770d1b3b9911?auto=format&fit=crop&w=800&q=80",
     desc: "America's immigrant gateway, layered tenement by tenement into a buzzing nightlife hub.",
     long: "For over a century the Lower East Side was where new arrivals — Jewish, Italian, Chinese, Puerto Rican — first landed and hustled. Its tenements now house the Tenement Museum alongside galleries, music venues, and some of the busiest bar-hopping in Manhattan. Katz's Delicatessen has been slicing pastrami here since 1888.",
@@ -440,6 +511,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Chelsea", nick: "The gallery district", region: "Midtown",
+    lat: 40.7465, lng: -74.0014,
     img: "https://images.unsplash.com/photo-1583842761802-9ad967f7e39a?auto=format&fit=crop&w=800&q=80",
     desc: "Contemporary art's HQ, an elevated park on old rail tracks, and a lively cultural core.",
     long: "Chelsea reinvented the derelict for a living: the High Line turned an abandoned freight viaduct into the city's most beloved elevated park, and hundreds of blue-chip galleries filled its former warehouses. Chelsea Market feeds the crowds and the neighborhood has long been a center of LGBTQ+ life.",
@@ -449,6 +521,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Times Square & Theater District", nick: "The Crossroads of the World", region: "Midtown",
+    lat: 40.7580, lng: -73.9855,
     img: "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=800&q=80",
     desc: "Blinding lights, Broadway marquees, and the beating tourist heart of the city.",
     long: "Love it or flee it, Times Square is the electric center of the Broadway theater district — dozens of stages within a few blocks staging the best live theater in the country. The billboards never sleep and roughly 50 million visitors pass through each year, making it one of the most visited places on earth.",
@@ -458,6 +531,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Midtown East", nick: "The corporate spine", region: "Midtown",
+    lat: 40.7549, lng: -73.9740,
     img: "https://images.unsplash.com/photo-1546436836-07a91091f160?auto=format&fit=crop&w=800&q=80",
     desc: "Grand Central, the Chrysler Building, and Art Deco skyscrapers by the block.",
     long: "The business engine of Manhattan, Midtown East stacks landmark towers shoulder to shoulder: the Chrysler Building's steel crown, the Empire State a few blocks south, and Grand Central Terminal's celestial ceiling. The United Nations sits on its eastern riverfront edge.",
@@ -467,6 +541,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Upper West Side", nick: "The UWS", region: "Uptown",
+    lat: 40.7870, lng: -73.9754,
     img: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=800&q=80",
     desc: "Cultured and residential — pre-war apartments, Lincoln Center, and two great parks as bookends.",
     long: "Framed by Central Park and Riverside Park, the Upper West Side is Manhattan's intellectual, family-friendly quarter. Stately pre-war buildings line the avenues, Lincoln Center anchors the performing arts, and the American Museum of Natural History has drawn wide-eyed kids for generations.",
@@ -476,6 +551,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Upper East Side", nick: "Museum Mile", region: "Uptown",
+    lat: 40.7736, lng: -73.9566,
     img: "https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=800&q=80",
     desc: "Old-money elegance, world-class museums, and the most rarefied stretch of Fifth Avenue.",
     long: "Manhattan at its most polished. Fifth and Park Avenues carry limestone mansions and doorman co-ops, while Museum Mile lines Central Park with the Met, the Guggenheim, and more. It's quieter and more buttoned-up than downtown — genteel by design.",
@@ -485,6 +561,7 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Harlem", nick: "The capital of Black America", region: "Uptown",
+    lat: 40.8116, lng: -73.9465,
     img: "https://images.unsplash.com/photo-1602940659805-770d1b3b9911?auto=format&fit=crop&w=800&q=80",
     desc: "The birthplace of a cultural renaissance — jazz, brownstones, and a proud living heritage.",
     long: "In the 1920s the Harlem Renaissance made these blocks the epicenter of Black art, literature, and music, echoing from the Apollo Theater's stage. Today Harlem balances its historic brownstone beauty and soul-food institutions with a wave of renewal, its cultural pride undimmed.",
@@ -557,6 +634,61 @@ function renderTimeline() {
   `).join('');
 }
 
+/* ---------------- Map ---------------- */
+const REGION_COLORS = { Downtown: "#b8442a", Midtown: "#1c3f5e", Uptown: "#c39a3e" };
+let mapInstance = null;
+const mapMarkers = {};
+
+function initMap() {
+  if (mapInstance || typeof L === 'undefined') return;
+  mapInstance = L.map('leafletMap', { scrollWheelZoom: false, zoomControl: true })
+    .setView([40.758, -73.985], 12);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    maxZoom: 19
+  }).addTo(mapInstance);
+
+  NEIGHBORHOODS.forEach(n => {
+    const color = REGION_COLORS[n.region] || "#b8442a";
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="map-pin" style="background:${color}"></div>`,
+      iconSize: [20, 20],
+      iconAnchor: [10, 20],
+      popupAnchor: [0, -18]
+    });
+    const marker = L.marker([n.lat, n.lng], { icon, title: n.name, keyboard: true }).addTo(mapInstance);
+    marker.bindPopup(
+      `<b>${n.name}</b><br><span style="color:#6f6656;font-size:12px">${n.region} · ${n.nick}</span>` +
+      `<br><button class="map-pop-btn" onclick="openModal('${n.name.replace(/'/g, "\\'")}')">Read more →</button>`
+    );
+    mapMarkers[n.name] = marker;
+  });
+
+  renderMapList();
+}
+
+function renderMapList() {
+  const el = document.getElementById('mapList');
+  el.innerHTML = NEIGHBORHOODS.map(n => `
+    <button data-map-name="${n.name}">
+      <span class="pin" style="background:${REGION_COLORS[n.region]}"></span>
+      <span class="txt"><strong>${n.name}</strong><small>${n.region} · ${n.nick}</small></span>
+    </button>
+  `).join('');
+  el.addEventListener('click', e => {
+    const btn = e.target.closest('[data-map-name]');
+    if (!btn) return;
+    const n = NEIGHBORHOODS.find(x => x.name === btn.dataset.mapName);
+    const marker = mapMarkers[n.name];
+    if (mapInstance && marker) {
+      mapInstance.flyTo([n.lat, n.lng], 14, { duration: .6 });
+      marker.openPopup();
+    }
+  });
+}
+
 /* ---------------- Modal ---------------- */
 const modal = document.getElementById('modal');
 const modalCard = document.getElementById('modalCard');
@@ -625,6 +757,19 @@ const revealIO = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); } });
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+/* lazy-init the map when its section scrolls near view */
+const mapEl = document.getElementById('leafletMap');
+const mapIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      initMap();
+      setTimeout(() => mapInstance && mapInstance.invalidateSize(), 200);
+      mapIO.unobserve(e.target);
+    }
+  });
+}, { rootMargin: '200px' });
+mapIO.observe(mapEl);
 
 /* init */
 renderFilters();
