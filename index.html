@@ -510,6 +510,46 @@ const NEIGHBORHOODS = [
     landmarks: ["Tenement Museum", "Katz's Delicatessen", "Essex Market", "Music venues"]
   },
   {
+    name: "Chinatown", nick: "Manhattan's living Chinatown", region: "Downtown",
+    lat: 40.7158, lng: -73.9970,
+    img: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=800&q=80",
+    desc: "One of the oldest and largest Chinese enclaves in the West — dense, loud, and delicious.",
+    long: "A neighborhood that runs on its own clock, Chinatown packs herbalists, dumpling houses, fishmongers, and bakeries into a warren of streets that spill over their old boundaries. Established by Cantonese immigrants in the late 1800s, it remains a fiercely living community — a place to eat exceptionally well and get happily lost. Doyers Street's sharp crook is one of the city's most storied corners.",
+    tags: ["Food", "Immigrant history", "Bustling"],
+    facts: { Established: "1870s", Vibe: "Vibrant", "Best for": "Dumplings + markets" },
+    landmarks: ["Doyers Street", "Mott Street", "Columbus Park", "Dim sum halls", "Mahayana Temple"]
+  },
+  {
+    name: "Little Italy", nick: "What's left of the old colony", region: "Downtown",
+    lat: 40.7194, lng: -73.9973,
+    img: "https://images.unsplash.com/photo-1546636889-ba9fdd63285b?auto=format&fit=crop&w=800&q=80",
+    desc: "A few sentimental blocks of red-sauce restaurants and the raucous San Gennaro feast.",
+    long: "Once a sprawling Italian immigrant stronghold, Little Italy has shrunk to a nostalgic strip along Mulberry Street as Chinatown grew around it. What remains leans into the romance — checkered tablecloths, espresso and cannoli, and the eleven-day Feast of San Gennaro each September that floods the streets with lights and sausage smoke.",
+    tags: ["Food", "Historic", "Festive"],
+    facts: { Established: "1880s", Vibe: "Nostalgic", "Best for": "Cannoli + people-watching" },
+    landmarks: ["Mulberry Street", "Feast of San Gennaro", "Old cafés", "Italian American Museum"]
+  },
+  {
+    name: "Nolita", nick: "North of Little Italy", region: "Downtown",
+    lat: 40.7228, lng: -73.9954,
+    img: "https://images.unsplash.com/photo-1519121785383-3229633bb75b?auto=format&fit=crop&w=800&q=80",
+    desc: "Little Italy's boutique-lined northern edge — cobblestones, cafés, and quiet cool.",
+    long: "Carved conceptually out of Little Italy's northern blocks, Nolita traded pushcarts for pared-back boutiques, third-wave coffee, and some of downtown's most photographed doorways. It's compact and low-slung, with the old brick of St. Patrick's Old Cathedral anchoring streets that feel more European village than Manhattan.",
+    tags: ["Boutiques", "Cafés", "Chic"],
+    facts: { Established: "1990s (as a name)", Vibe: "Effortless", "Best for": "Boutique browsing" },
+    landmarks: ["Elizabeth Street Garden", "St. Patrick's Old Cathedral", "Boutiques", "Cafés"]
+  },
+  {
+    name: "Meatpacking District", nick: "The MePa", region: "Downtown",
+    lat: 40.7411, lng: -74.0078,
+    img: "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&w=800&q=80",
+    desc: "Cobblestone warehouses turned nightlife, fashion, and the Whitney — where the High Line begins.",
+    long: "Named for the slaughterhouses that once packed its streets, the Meatpacking District reinvented itself as a glossy nexus of nightlife, flagship fashion, and design. The Whitney Museum landed at its southwest corner where the High Line now begins its elevated run, and the old Belgian-block streets still clatter underfoot beneath the gloss.",
+    tags: ["Nightlife", "Fashion", "The High Line"],
+    facts: { Established: "1900s", Vibe: "Glossy", "Best for": "Whitney + nightlife" },
+    landmarks: ["Whitney Museum", "High Line (south end)", "Gansevoort Street", "Little Island"]
+  },
+  {
     name: "Chelsea", nick: "The gallery district", region: "Midtown",
     lat: 40.7465, lng: -74.0014,
     img: "https://images.unsplash.com/photo-1583842761802-9ad967f7e39a?auto=format&fit=crop&w=800&q=80",
@@ -518,6 +558,26 @@ const NEIGHBORHOODS = [
     tags: ["Art", "The High Line", "Culture"],
     facts: { Established: "1800s", Vibe: "Creative", "Best for": "Galleries + the High Line" },
     landmarks: ["The High Line", "Chelsea Market", "Gallery district", "Hudson Yards edge"]
+  },
+  {
+    name: "Flatiron & Gramercy", nick: "Around the iron wedge", region: "Midtown",
+    lat: 40.7401, lng: -73.9903,
+    img: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80",
+    desc: "The wedge-shaped Flatiron icon, leafy Gramercy Park, and a beloved greenmarket.",
+    long: "Anchored by the 1902 Flatiron Building — that impossibly thin wedge where Broadway crosses Fifth — this district blends handsome commercial architecture with the hush of Gramercy Park, the city's only private key-holders' square. Union Square's greenmarket and Madison Square Park (birthplace of Shake Shack) bracket a neighborhood that feels grown-up and green.",
+    tags: ["Architecture", "Parks", "Dining"],
+    facts: { Established: "1900s", Vibe: "Polished", "Best for": "Architecture + markets" },
+    landmarks: ["Flatiron Building", "Gramercy Park", "Union Square", "Madison Square Park"]
+  },
+  {
+    name: "Hell's Kitchen", nick: "Clinton, to realtors", region: "Midtown",
+    lat: 40.7638, lng: -73.9918,
+    img: "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=800&q=80",
+    desc: "A gritty-turned-buzzing west side of restaurant rows, theaters, and lively nightlife.",
+    long: "Long the rough-edged home of dockworkers and Irish gangs west of the theaters, Hell's Kitchen shed its reputation to become one of Midtown's most energetic neighborhoods. Ninth Avenue is a wall-to-wall run of cuisines from every continent, and it's the beating heart of the city's LGBTQ+ nightlife, feeding actors and audiences alike just steps from Broadway.",
+    tags: ["Food", "Nightlife", "Theater-adjacent"],
+    facts: { Established: "1800s", Vibe: "Energetic", "Best for": "Global eats + pre-show" },
+    landmarks: ["Ninth Avenue", "Restaurant Row", "Hudson Yards", "Intrepid Museum"]
   },
   {
     name: "Times Square & Theater District", nick: "The Crossroads of the World", region: "Midtown",
@@ -568,6 +628,36 @@ const NEIGHBORHOODS = [
     tags: ["Culture", "Jazz", "Historic"],
     facts: { Established: "1600s", Vibe: "Soulful", "Best for": "Music + culture" },
     landmarks: ["Apollo Theater", "Sylvia's", "Marcus Garvey Park", "Striver's Row"]
+  },
+  {
+    name: "Morningside Heights", nick: "The Academic Acropolis", region: "Uptown",
+    lat: 40.8090, lng: -73.9626,
+    img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80",
+    desc: "Columbia's stately campus, soaring cathedrals, and a calm collegiate hush above Harlem.",
+    long: "Perched on a plateau between the Upper West Side and Harlem, Morningside Heights is defined by its institutions: Columbia University's neoclassical quad, the vast unfinished Cathedral of St. John the Divine, and Riverside Church's tower. Bookshops, coffee, and Riverside Park's greenery lend it a bookish, unhurried air.",
+    tags: ["Academic", "Landmarks", "Quiet"],
+    facts: { Established: "1900s", Vibe: "Scholarly", "Best for": "Campus + cathedrals" },
+    landmarks: ["Columbia University", "St. John the Divine", "Riverside Church", "Grant's Tomb"]
+  },
+  {
+    name: "Washington Heights", nick: "Little Dominican Republic", region: "Uptown",
+    lat: 40.8417, lng: -73.9393,
+    img: "https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?auto=format&fit=crop&w=800&q=80",
+    desc: "Vibrant Dominican culture, hilltop parks, and medieval cloisters above the Hudson.",
+    long: "Far uptown where the island narrows and rises, Washington Heights is the heart of New York's Dominican community — merengue from open windows, mofongo on every block, and the neighborhood immortalized in the musical 'In the Heights.' Fort Tryon Park crowns the bluff, home to The Cloisters, the Met's serene museum of medieval art overlooking the river.",
+    tags: ["Culture", "Parks", "Music"],
+    facts: { Established: "1900s", Vibe: "Lively", "Best for": "The Cloisters + food" },
+    landmarks: ["The Cloisters", "Fort Tryon Park", "United Palace", "Little Red Lighthouse"]
+  },
+  {
+    name: "Inwood", nick: "The island's northern tip", region: "Uptown",
+    lat: 40.8677, lng: -73.9212,
+    img: "https://images.unsplash.com/photo-1587502537745-84b86da1204f?auto=format&fit=crop&w=800&q=80",
+    desc: "Manhattan's leafy, laid-back top — old-growth forest, salt marsh, and caves included.",
+    long: "At the very top of the island, Inwood feels like a secret: quiet, affordable-ish, and wrapped in the only natural forest and salt marsh left in Manhattan. Inwood Hill Park hides caves once used by the Lenape, and the neighborhood's tight-knit Dominican and Irish roots give it a small-town warmth rare this close to the skyline.",
+    tags: ["Nature", "Residential", "Hidden gem"],
+    facts: { Established: "1900s", Vibe: "Tranquil", "Best for": "Hikes + quiet" },
+    landmarks: ["Inwood Hill Park", "Dyckman Farmhouse", "Salt marsh", "The Lenape caves"]
   }
 ];
 
@@ -642,7 +732,7 @@ const mapMarkers = {};
 function initMap() {
   if (mapInstance || typeof L === 'undefined') return;
   mapInstance = L.map('leafletMap', { scrollWheelZoom: false, zoomControl: true })
-    .setView([40.758, -73.985], 12);
+    .setView([40.782, -73.971], 12);
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap &copy; CARTO',
@@ -665,6 +755,10 @@ function initMap() {
     );
     mapMarkers[n.name] = marker;
   });
+
+  // Frame the map so every pin is visible, from FiDi up to Inwood.
+  const bounds = L.latLngBounds(NEIGHBORHOODS.map(n => [n.lat, n.lng]));
+  mapInstance.fitBounds(bounds, { padding: [40, 40] });
 
   renderMapList();
 }
