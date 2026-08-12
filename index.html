@@ -354,6 +354,7 @@
       <h2>See where they sit on the island.</h2>
       <p>Every neighborhood, pinned and color-coded by region. Click a pin — or a name in the list — to open its full profile.</p>
     </div>
+    <div class="filters reveal" id="mapFilters" role="tablist" aria-label="Filter map by region" style="margin-bottom:20px"></div>
     <div class="map-layout reveal">
       <div id="leafletMap" role="application" aria-label="Interactive map of Manhattan neighborhoods"></div>
       <aside class="map-list" id="mapList" aria-label="Neighborhood list"></aside>
@@ -728,6 +729,30 @@ function renderTimeline() {
 const REGION_COLORS = { Downtown: "#b8442a", Midtown: "#1c3f5e", Uptown: "#c39a3e" };
 let mapInstance = null;
 const mapMarkers = {};
+let mapActiveRegion = "All";
+
+function renderMapFilters() {
+  document.getElementById('mapFilters').innerHTML = REGIONS.map(r =>
+    `<button class="chip ${r===mapActiveRegion?'active':''}" data-map-region="${r}" role="tab" aria-selected="${r===mapActiveRegion}">${r}</button>`
+  ).join('');
+}
+
+function applyMapFilter(region) {
+  mapActiveRegion = region;
+  renderMapFilters();
+  renderMapList();
+  if (!mapInstance) return;
+  const visible = NEIGHBORHOODS.filter(n => region === "All" || n.region === region);
+  NEIGHBORHOODS.forEach(n => {
+    const m = mapMarkers[n.name];
+    if (!m) return;
+    if (region === "All" || n.region === region) { m.addTo(mapInstance); }
+    else { m.remove(); }
+  });
+  if (visible.length) {
+    mapInstance.flyToBounds(L.latLngBounds(visible.map(n => [n.lat, n.lng])), { padding: [40, 40], duration: 0.7 });
+  }
+}
 
 function initMap() {
   if (mapInstance || typeof L === 'undefined') return;
@@ -765,12 +790,15 @@ function initMap() {
 
 function renderMapList() {
   const el = document.getElementById('mapList');
-  el.innerHTML = NEIGHBORHOODS.map(n => `
-    <button data-map-name="${n.name}">
-      <span class="pin" style="background:${REGION_COLORS[n.region]}"></span>
-      <span class="txt"><strong>${n.name}</strong><small>${n.region} · ${n.nick}</small></span>
-    </button>
-  `).join('');
+  const list = NEIGHBORHOODS.filter(n => mapActiveRegion === "All" || n.region === mapActiveRegion);
+  el.innerHTML = list.length
+    ? list.map(n => `
+        <button data-map-name="${n.name}">
+          <span class="pin" style="background:${REGION_COLORS[n.region]}"></span>
+          <span class="txt"><strong>${n.name}</strong><small>${n.region} · ${n.nick}</small></span>
+        </button>
+      `).join('')
+    : `<p style="color:var(--muted);font-size:14px;padding:12px 4px">No neighborhoods in this region.</p>`;
   el.addEventListener('click', e => {
     const btn = e.target.closest('[data-map-name]');
     if (!btn) return;
@@ -830,6 +858,12 @@ filtersEl.addEventListener('click', e => {
   renderGrid();
 });
 
+document.getElementById('mapFilters').addEventListener('click', e => {
+  const btn = e.target.closest('[data-map-region]');
+  if (!btn) return;
+  applyMapFilter(btn.dataset.mapRegion);
+});
+
 grid.addEventListener('click', e => {
   const btn = e.target.closest('[data-name]');
   if (btn) openModal(btn.dataset.name);
@@ -869,6 +903,7 @@ mapIO.observe(mapEl);
 renderFilters();
 renderGrid();
 renderTimeline();
+renderMapFilters();
 </script>
 </body>
 </html>
