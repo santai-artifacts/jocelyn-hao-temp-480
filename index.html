@@ -15,7 +15,7 @@
     --paper: #f6f1e7;
     --paper-2: #efe7d8;
     --line: #d8ccb4;
-    --accent: #b8442a;      /* brick red */
+    --accent: #2a5c48;      /* forest green */
     --accent-2: #1c3f5e;    /* hudson blue */
     --gold: #c39a3e;
     --muted: #6f6656;
@@ -60,7 +60,7 @@
   .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.01em; }
   .brand .mark {
     width: 30px; height: 30px; border-radius: 8px; flex: none;
-    background: linear-gradient(135deg, var(--accent), #d76a4a);
+    background: linear-gradient(135deg, var(--accent), #3d8a6e);
     display: grid; place-items: center; color: #fff; font-family: 'Fraunces'; font-weight: 900;
     box-shadow: var(--shadow);
   }
@@ -363,7 +363,7 @@
       <aside class="map-list" id="mapList" aria-label="Neighborhood list"></aside>
     </div>
     <div class="map-legend reveal">
-      <span><i style="background:#b8442a"></i>Downtown</span>
+      <span><i style="background:#2a5c48"></i>Downtown</span>
       <span><i style="background:#1c3f5e"></i>Midtown</span>
       <span><i style="background:#c39a3e"></i>Uptown</span>
     </div>
@@ -729,7 +729,7 @@ function renderTimeline() {
 }
 
 /* ---------------- Map ---------------- */
-const REGION_COLORS = { Downtown: "#b8442a", Midtown: "#1c3f5e", Uptown: "#c39a3e" };
+const REGION_COLORS = { Downtown: "#2a5c48", Midtown: "#1c3f5e", Uptown: "#c39a3e" };
 let mapInstance = null;
 const mapMarkers = {};
 let mapActiveRegion = "All";
@@ -768,7 +768,7 @@ function initMap() {
   }).addTo(mapInstance);
 
   NEIGHBORHOODS.forEach(n => {
-    const color = REGION_COLORS[n.region] || "#b8442a";
+    const color = REGION_COLORS[n.region] || "#2a5c48";
     const icon = L.divIcon({
       className: '',
       html: `<div class="map-pin" style="background:${color}"></div>`,
